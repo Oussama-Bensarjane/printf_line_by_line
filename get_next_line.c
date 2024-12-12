@@ -1,6 +1,5 @@
-// #include <libc.h>
 #include "get_next_line.h"
-// #include <stdio.h>
+
 char    *new_line(int fd, char *static_buf)
 {
     int     _read_byt;
@@ -36,8 +35,8 @@ char    *grep_line(char *s)
 	char *dst;
 
     i = 0;
-    if (!s)
-		return (NULL);
+    if (!s[i])
+        return (NULL);
     while (s[i] && s[i] != '\n')
         i++;
     if (s[i] == '\n')
@@ -57,7 +56,7 @@ char    *grep_line(char *s)
         i++;
     }
     dst[i] = '\0';
-	return (dst);
+    return (dst);
 }
 
 char    *next_line(char *s)
@@ -76,7 +75,10 @@ char    *next_line(char *s)
     }
     buf = malloc(ft_strlen(s) - i + 1);
     if (!buf)
+    {   
+        free(s);
         return (NULL);
+    }
     i++;
     j = 0;
     while (s[i])
@@ -94,7 +96,6 @@ char    *get_next_line(int fd)
 
     if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= 2147483647)
         return (NULL);
-    //printf("\nstatic_buf->%s", static_buf);
     static_buf = new_line(fd, static_buf);
     if(!static_buf)
         return (NULL);
