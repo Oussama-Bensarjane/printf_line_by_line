@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obensarj <obensarj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/13 02:46:05 by obensarj          #+#    #+#             */
-/*   Updated: 2024/12/13 03:22:29 by obensarj         ###   ########.fr       */
+/*   Created: 2024/12/13 03:47:41 by obensarj          #+#    #+#             */
+/*   Updated: 2024/12/13 04:24:28 by obensarj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*new_line(int fd, char *static_buf)
 {
@@ -96,15 +96,15 @@ char	*next_line(char *s)
 
 char	*get_next_line(int fd)
 {
-	static char	*static_buf;
+	static char	*static_buf[OPEN_MAX];
 	char		*the_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= 2147483647)
 		return (NULL);
-	static_buf = new_line(fd, static_buf);
-	if (!static_buf)
+	static_buf[fd] = new_line(fd, static_buf[fd]);
+	if (!static_buf[fd])
 		return (NULL);
-	the_line = grep_line(static_buf);
-	static_buf = next_line(static_buf);
+	the_line = grep_line(static_buf[fd]);
+	static_buf[fd] = next_line(static_buf[fd]);
 	return (the_line);
 }
